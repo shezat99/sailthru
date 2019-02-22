@@ -1,0 +1,20 @@
+# Although the requiremnets say to ignore s3, the data type is complex which is not supported
+# by Redshift. However, the workaround is to load data in s3 and create external tables in Redshift.
+# This way the complex data types can be handled and queried. So I have written a python script.
+# The code was not tested and might needed some tweaks to work. 
+
+#Python code to load data files received from vendor into s3
+import boto3
+import os
+
+def upload_files(nas_share_dir, aws_s3_address, aws_s3_bucket):
+    '''This program runs every hour at hour past 05 mins and looks for files in the nas share'''
+    s3 = boto3.resource('s3')
+
+    for (root, dirs, files) in os.walk(nas_share_dir):
+        for filename in files:
+            print("File: {}".format(filename))
+            s3_filename = aws_s3_address + filename
+            print('Uploading to %s...' % (s3_filename))
+            s3.meta.client.upload_file(nas_share_dir + filename, aws_s3_bucket, s3_filename)
+            print('Done')

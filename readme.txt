@@ -1,0 +1,1 @@
+there are three files. 'create_table_code'  has the sql for creating tables, '#Python code to load data files received from vendor' has the python script to upload files received in nas share location to amazon s3 and the 'Answers to Questions' has answers to the questions asked.

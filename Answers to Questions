@@ -1,0 +1,17 @@
+--Total e-mails clicked and total e-mails opened
+
+select sum(json_array_length(opens)), sum(json_array_length(clicks))
+from t_message_blast
+--Alternatively, the totals can be shown on Tableau dashboard as well if that is being used for vidualization . 
+
+-- total_historical_emails_sent and total_historical_mails_opened
+-- Cannot define the historical mail from the information provided, so this part is skipped.
+
+-- How to avoid duplicate data in the system
+-- Based on the information provided, restriciting the send_time to the minimum i.e. min(send_time) might solve the issue. 
+-- this restriction can be done in Tableau as well if that is being used for vidualization 
+
+--To make sure that the user is looking at the most updated data.
+-- one solution might be to create a new table and enter the current time stamp in that after loading the data in redshift
+--   and display the content of this table somewhere on the dashboard. 
+

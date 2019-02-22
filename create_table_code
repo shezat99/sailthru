@@ -1,0 +1,113 @@
+-- create table t_blast
+CREATE EXTERNAL TABLE
+sailthru.t_blast  
+( 
+blast_name varchar(240), 
+blast_date date,  
+id varchar(64)
+)  
+ROW FORMAT SERDE 
+  'org.openx.data.jsonserde.JsonSerDe' 
+  WITH SERDEPROPERTIES ( 
+  'ignore.malformed.json' = 'true',
+  'paths'='blast_name, blast_date date, id')
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION { '/nas_share/t_blast' }
+
+
+-- create table t_message_blast
+CREATE EXTERNAL TABLE
+sailthru.t_message_blast  
+(
+profile_id varchar(64), 
+send_time timestamp, 
+opens array<timestamp>, 
+clicks array<struct<url:varchar(64), ts:timestamp>>, 
+blast_id varchar(64), 
+message_id varchar(64), 
+device varchar(64), 
+message_revenue int, 
+delivery_status varchar(64) 
+)
+ROW FORMAT SERDE 
+  'org.openx.data.jsonserde.JsonSerDe' 
+  WITH SERDEPROPERTIES ( 
+  'ignore.malformed.json' = 'true',
+  'paths'='profile_id, send_time, opens, clicks, blast_id, message_id, device, message_revenue, delivery_status')
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION { '/nas_share/t_message_blast' }
+
+
+--create table t_message_transactions
+CREATE EXTERNAL TABLE
+sailthru.t_message_transactions 
+(
+profile_id varchar(64) , 
+template varchar(120) , 
+send_time timestamp, 
+clicks array<struct<url:varchar(64), ts:timestamp>>, 
+opens array<timestamp>, , 
+device varchar(64) , 
+message_revenue int, 
+delivery_status varchar(64), 
+blast_id varchar(64) 
+)
+ROW FORMAT SERDE 
+  'org.openx.data.jsonserde.JsonSerDe' 
+  WITH SERDEPROPERTIES ( 
+  'ignore.malformed.json' = 'true',
+  'profile_id, template, send_time, clicks, opens, device, message_revenue, delivery_status')
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION { '/nas_share/t_message_transactions' }
+
+
+--create table t_profile
+CREATE EXTERNAL TABLE
+sailthru.t_profile  
+( 
+browser varchar(64), 
+email varchar(64), 
+geo array<struct<city:varchar(64), city_count:int>, 
+			struct<count_v:varchar(64), count_i:int>
+  			struct<country:varchar(64), country_count:int>
+  			struct<state:varchar(64), state_count:int>
+  			struct<zip:varchar(64), zip_count:int>>,
+lists_signup array<struct<lisr_description:varchar(64), list_date:timestamp>>, 
+optout_reason varchar(200),
+optout_time timestamp,  
+signup_time timestamp,
+vars  array<struct<var_description:varchar(64), vars_date:timestamp>>
+create_date timestamp,
+total_opens int,
+total_clicks int, 
+total_unique_opens int,
+total_unique_clicks int,
+total_pageviews int,
+total_messages int, 
+last_open timestamp,, 
+last_click timestamp, 
+last_pageview timestamp,  
+id varchar(64)
+)  
+ROW FORMAT SERDE 
+  'org.openx.data.jsonserde.JsonSerDe' 
+  WITH SERDEPROPERTIES ( 
+  'ignore.malformed.json' = 'true',
+  'paths'='browser, email, geo, lists_signup,optout_reason, optout_time, signup_time,vars, create_date,total_opens, total_clicks, total_unique_opens,total_unique_clicks, total_pageviews, total_messages, last_open, t_click, last_pageview,  ids')
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION { '/nas_share/t_profile' }
+
+
+
